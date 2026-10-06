@@ -1,5 +1,5 @@
 """
-rag.py — RAG-based schema retrieval for NBA text-to-SQL.
+rag.py — RAG-based schema retrieval for HoopQL.
 
 Backends:
   - dense: sentence-transformers + FAISS (cosine via inner product on normalized vectors)

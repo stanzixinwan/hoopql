@@ -1,5 +1,5 @@
 """
-demo.py — Gradio app for NBA text-to-SQL inference.
+demo.py — Gradio app for HoopQL inference.
 
 Features:
   - Natural language input
@@ -59,8 +59,8 @@ def launch(args: argparse.Namespace) -> None:
         status, result = _execute_sql(pred_sql, args.nba_db)
         return pred_sql, status, result, ", ".join(retrieved)
 
-    with gr.Blocks(title="NBA Text-to-SQL Demo") as app:
-        gr.Markdown("# NBA Text-to-SQL")
+    with gr.Blocks(title="HoopQL") as app:
+        gr.Markdown("# HoopQL")
         gr.Markdown("输入英文问题，模型会生成 SQL 并在 NBA SQLite 上执行。")
 
         question = gr.Textbox(label="Question", placeholder="How many teams are in the NBA?")

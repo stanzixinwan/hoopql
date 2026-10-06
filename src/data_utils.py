@@ -1,5 +1,5 @@
 """
-data_utils.py — Unified data pipeline for Spider + NBA text-to-SQL.
+data_utils.py — Unified data pipeline for HoopQL (Spider training and NBA evaluation).
 
 Key fix in this version:
     - load_nba_dataset() now supports use_oracle_tables=True, which restricts

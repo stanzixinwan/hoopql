@@ -7,6 +7,8 @@
 
 Use **Python 3.12 or 3.13** for CUDA builds (your RTX 3080 works with cu124).
 
+macOS Apple Silicon does not use this file. Run `./scripts/setup_venv.sh` there instead. `.venv` is not shared between machines.
+
 ## One-shot venv (recommended)
 
 From the repo root:
@@ -41,7 +43,7 @@ You should see `cuda: True` and your GPU name. Driver-side “CUDA Version” in
 Training and evaluation scripts refuse to run on CPU unless you set:
 
 ```powershell
-$env:NBA_TEXT2SQL_ALLOW_CPU="1"
+$env:HOOPQL_ALLOW_CPU="1"
 ```
 
 ## Agent / automation note

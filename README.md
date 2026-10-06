@@ -1,6 +1,6 @@
-# NBA Text-to-SQL (PEFT + RAG)
+# HoopQL
 
-End-to-end text-to-SQL project for COSI 115b. The repository includes data processing, training, evaluation, and demo scripts for translating natural language basketball questions into executable SQL.
+HoopQL turns natural-language basketball questions into executable SQL. This repository includes data processing, training, evaluation, and a demo.
 
 ## Project Snapshot
 
@@ -14,14 +14,16 @@ End-to-end text-to-SQL project for COSI 115b. The repository includes data proce
 
 ### 1) Create environment and install dependencies
 
+`.venv` is per machine and gitignored. Recreate it after switching devices; do not copy it.
+
+macOS (Apple Silicon):
+
 ```bash
-python -m venv .venv
-# Linux/macOS:
+./scripts/setup_venv.sh
 source .venv/bin/activate
-# Windows PowerShell:
-# .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
 ```
+
+Windows with NVIDIA: `.\scripts\setup_gpu_venv.ps1` (see `GPU_SETUP.md`). That script also installs `requirements-gpu.txt` (`bitsandbytes`), which is CUDA-only and is not part of the Mac install.
 
 ### 2) GPU requirement
 
@@ -31,7 +33,7 @@ pip install -r requirements.txt
 - For debug-only CPU runs, set:
 
 ```powershell
-$env:NBA_TEXT2SQL_ALLOW_CPU=1
+$env:HOOPQL_ALLOW_CPU=1
 ```
 
 For additional Windows GPU setup details, see `GPU_SETUP.md`.

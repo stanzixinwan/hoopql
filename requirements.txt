@@ -16,5 +16,5 @@ gradio>=4.0.0
 sqlparse>=0.4.4
 tqdm
 
-# QLoRA / 4-bit training (CUDA; skip on CPU-only or if wheel unavailable for your platform)
-bitsandbytes>=0.45.0
+# QLoRA / 4-bit training is CUDA-only. Install separately on the GPU machine:
+#   pip install -r requirements-gpu.txt

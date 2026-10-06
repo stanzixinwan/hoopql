@@ -9,8 +9,8 @@ import torch
 
 
 def require_cuda() -> None:
-    """Exit unless a CUDA device is visible, or NBA_TEXT2SQL_ALLOW_CPU=1."""
-    if os.environ.get("NBA_TEXT2SQL_ALLOW_CPU", "").strip().lower() in (
+    """Exit unless a CUDA device is visible, or HOOPQL_ALLOW_CPU=1."""
+    if os.environ.get("HOOPQL_ALLOW_CPU", "").strip().lower() in (
         "1",
         "true",
         "yes",
@@ -22,7 +22,7 @@ def require_cuda() -> None:
         "ERROR: CUDA is not available. Install PyTorch with CUDA (see GPU_SETUP.md).\n"
         "  Example: py -3.13 -m pip install torch --index-url "
         "https://download.pytorch.org/whl/cu124\n"
-        "  Or set NBA_TEXT2SQL_ALLOW_CPU=1 to allow CPU (debug only).",
+        "  Or set HOOPQL_ALLOW_CPU=1 to allow CPU (debug only).",
         file=sys.stderr,
     )
     sys.exit(1)

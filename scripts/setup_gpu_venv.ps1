@@ -23,6 +23,7 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 
 Write-Host "Installing project requirements ..."
 pip install -r requirements.txt
+pip install -r requirements-gpu.txt
 
 Write-Host ""
 python -c "import torch; print('torch:', torch.__version__); print('cuda:', torch.cuda.is_available()); print('device:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'n/a')"
