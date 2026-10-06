@@ -2,7 +2,7 @@
 rag.py — RAG-based schema retrieval for HoopQL.
 
 Backends:
-  - dense: sentence-transformers + FAISS (cosine via inner product on normalized vectors)
+  - dense: sentence-transformers + FAISS (inner product on normalized vectors)
   - bm25:  BM25Okapi over the same per-table schema documents
   - hybrid: RRF fusion of dense + BM25 rankings (no extra re-ranker)
 
