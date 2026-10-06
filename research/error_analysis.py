@@ -82,7 +82,7 @@ def analyze_file(path: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("eval_files", nargs="+")
-    parser.add_argument("--output", default="eval/error_analysis_summary.json")
+    parser.add_argument("--output", default="research/results/error_analysis_summary.json")
     parser.add_argument("--save-annotated", action="store_true")
     args = parser.parse_args()
 

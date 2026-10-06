@@ -2,7 +2,7 @@
 rescore_nba.py — Re-score existing NBA evaluation JSON files on the held-out
 test split, without re-running model generation.
 
-Each file in eval/<run>_nba*.json is a list of 200 result dicts whose order
+Each file in research/results/runs/<run>_nba*.json is a list of 200 result dicts whose order
 matches data/nba/nba_questions.json (indices 0..199). train_nba.py created a
 deterministic 150/50 split in data/nba/nba_split.json. This script:
 
@@ -12,14 +12,11 @@ deterministic 150/50 split in data/nba/nba_split.json. This script:
   3. Slices the result list down to the 50 test indices.
   4. Recomputes overall execution / exact-match accuracy and a per-difficulty
      breakdown — same format as evaluate.py's printout.
-  5. With --save, writes the test subset back to eval/<basename>_test.json
+  5. With --save, writes the test subset back to research/results/runs/<basename>_test.json
      (preserving the original record schema) for downstream analysis.
 
 Usage:
-    python -m src.rescore_nba eval/lora_t5-base_r16_nba_oracle.json \
-                              eval/lora_t5-base_r16_nba_n20_v2_nba_oracle.json \
-                              eval/lora_t5-base_r16_nba_n70_v2_nba_oracle.json \
-                              eval/lora_t5-base_r16_nba_nall_v2_nba_oracle.json \
+    python -m research.rescore_nba research/results/runs/lora_t5-base_r16_nba_oracle.json \
                               --save
 """
 
@@ -135,7 +132,7 @@ def main():
     parser.add_argument("--save", action="store_true",
                         help="Save the test subset for each input as "
                              "<output-dir>/<basename>_test.json")
-    parser.add_argument("--output-dir", default="eval",
+    parser.add_argument("--output-dir", default="research/results/runs",
                         help="Where to write _test.json files when --save is given")
     args = parser.parse_args()
 

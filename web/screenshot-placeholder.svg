@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#f4f1ea"/>
+  <rect x="48" y="48" width="864" height="444" rx="16" fill="#ffffff" stroke="#1d428a" stroke-width="2"/>
+  <text x="80" y="120" font-family="Georgia, serif" font-size="36" fill="#1d428a">HoopQL</text>
+  <text x="80" y="168" font-family="Georgia, serif" font-size="18" fill="#444">Screenshot placeholder</text>
+  <rect x="80" y="210" width="800" height="48" rx="8" fill="#f7f7f7" stroke="#ccc"/>
+  <text x="96" y="240" font-family="ui-sans-serif, sans-serif" font-size="16" fill="#888">Which players averaged a double-double in the playoffs but not the regular season?</text>
+  <rect x="80" y="290" width="220" height="120" rx="8" fill="#1d428a"/>
+  <text x="96" y="356" font-family="ui-sans-serif, sans-serif" font-size="16" fill="#ffffff">SQL and rows</text>
+</svg>

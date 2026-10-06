@@ -7,8 +7,8 @@ This helper does not change model logic. It standardizes command templates for:
   - NBA adaptation points (n=10/20/70/all)
 
 Usage examples:
-    python -m src.run_experiment_matrix --stage rank_sweep --dry-run
-    python -m src.run_experiment_matrix --stage method_compare --run
+    python -m research.run_experiment_matrix --stage rank_sweep --dry-run
+    python -m research.run_experiment_matrix --stage method_compare --run
 """
 
 import argparse
@@ -30,7 +30,7 @@ def _print_and_run(commands: list[str], run: bool) -> None:
 def build_rank_sweep(model: str, epochs: int, lr: float, seed: int) -> list[str]:
     return [
         (
-            f"{sys.executable} -m src.train --method lora --model {model} "
+            f"{sys.executable} -m research.train --method lora --model {model} "
             f"--rank {rank} --epochs {epochs} --lr {lr} --seed {seed}"
         )
         for rank in (4, 8, 16, 32)
@@ -45,7 +45,7 @@ def build_method_compare(model: str, epochs: int, lr: float, seed: int) -> list[
     ]
     return [
         (
-            f"{sys.executable} -m src.train --method {method} --model {model} "
+            f"{sys.executable} -m research.train --method {method} --model {model} "
             f"{extra} --epochs {epochs} --lr {lr} --seed {seed}"
         ).strip()
         for method, extra in methods
@@ -56,7 +56,7 @@ def build_adaptation_points(base_checkpoint: str, base_model: str, seed: int) ->
     points = ["10", "20", "70", "all"]
     return [
         (
-            f"{sys.executable} -m src.train_nba --base-checkpoint {base_checkpoint} "
+            f"{sys.executable} -m research.train_nba --base-checkpoint {base_checkpoint} "
             f"--base-model {base_model} --n-train {n} --seed {seed}"
         )
         for n in points

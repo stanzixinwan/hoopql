@@ -2,12 +2,12 @@
 build_results_report.py — Build comparable result tables from eval JSON files.
 
 Outputs:
-  - eval/results_summary.csv
-  - eval/results_summary.md
-  - eval/fewshot_curve.csv
-  - eval/rag_ablation.csv
-  - eval/spider_summary.csv
-  - eval/spider_summary.md
+  - research/results/results_summary.csv
+  - research/results/results_summary.md
+  - research/results/fewshot_curve.csv
+  - research/results/rag_ablation.csv
+  - research/results/spider_summary.csv
+  - research/results/spider_summary.md
 """
 
 import argparse
@@ -105,7 +105,7 @@ def _parse_n_train(name: str) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--eval-dir", default="eval")
+    parser.add_argument("--eval-dir", default="research/results/runs")
     parser.add_argument("--glob", default="*_test.json")
     parser.add_argument("--bootstrap-samples", type=int, default=2000)
     parser.add_argument("--bootstrap-seed", type=int, default=42)
@@ -113,6 +113,7 @@ def main() -> None:
     args = parser.parse_args()
 
     eval_dir = Path(args.eval_dir)
+    summary_dir = eval_dir.parent if eval_dir.name == "runs" else eval_dir
     files = sorted(eval_dir.glob(args.glob))
     rng = random.Random(args.bootstrap_seed)
     rows = []
@@ -138,7 +139,7 @@ def main() -> None:
             "exact_ci_high": round(exact_high, 4),
         })
 
-    out_csv = eval_dir / "results_summary.csv"
+    out_csv = summary_dir / "results_summary.csv"
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
@@ -162,7 +163,7 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(rows)
 
-    out_md = eval_dir / "results_summary.md"
+    out_md = summary_dir / "results_summary.md"
     with open(out_md, "w", encoding="utf-8") as f:
         f.write("| file | model | method | mode | n_train | exec_acc | exec_ci | exact_acc | exact_ci |\n")
         f.write("|---|---|---|---|---:|---:|---|---:|---|\n")
@@ -175,7 +176,7 @@ def main() -> None:
 
     fewshot = [r for r in rows if r["n_train"] in {"0", "10", "20", "70", "all"} and r["mode"] == "oracle"]
     fewshot = sorted(fewshot, key=lambda x: {"0": 0, "10": 1, "20": 2, "70": 3, "all": 4}[x["n_train"]])
-    with open(eval_dir / "fewshot_curve.csv", "w", newline="", encoding="utf-8") as f:
+    with open(summary_dir / "fewshot_curve.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
             fieldnames=[
@@ -208,7 +209,7 @@ def main() -> None:
             })
 
     rag = [r for r in rows if r["mode"] == "rag"]
-    with open(eval_dir / "rag_ablation.csv", "w", newline="", encoding="utf-8") as f:
+    with open(summary_dir / "rag_ablation.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
             fieldnames=[
@@ -270,7 +271,7 @@ def main() -> None:
         })
 
     spider_rows = sorted(spider_rows, key=lambda r: r["exact_acc"], reverse=True)
-    spider_csv = eval_dir / "spider_summary.csv"
+    spider_csv = summary_dir / "spider_summary.csv"
     with open(spider_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
@@ -290,7 +291,7 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(spider_rows)
 
-    spider_md = eval_dir / "spider_summary.md"
+    spider_md = summary_dir / "spider_summary.md"
     with open(spider_md, "w", encoding="utf-8") as f:
         f.write("| file | model | n_examples | exec_acc | exec_ci | exact_acc | exact_ci |\n")
         f.write("|---|---|---:|---:|---|---:|---|\n")
@@ -303,8 +304,8 @@ def main() -> None:
 
     print(f"Saved -> {out_csv}")
     print(f"Saved -> {out_md}")
-    print(f"Saved -> {eval_dir / 'fewshot_curve.csv'}")
-    print(f"Saved -> {eval_dir / 'rag_ablation.csv'}")
+    print(f"Saved -> {summary_dir / 'fewshot_curve.csv'}")
+    print(f"Saved -> {summary_dir / 'rag_ablation.csv'}")
     print(f"Saved -> {spider_csv}")
     print(f"Saved -> {spider_md}")
 

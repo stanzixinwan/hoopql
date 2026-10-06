@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
-# Local venv for macOS Apple Silicon (and any non-CUDA machine).
-# Recreate .venv on each device; it is gitignored and not portable across OSes.
+# Research venv for the frozen training stack (macOS Apple Silicon and other non-CUDA machines).
+# This is separate from the product environment created by `uv sync` at the repo root.
+# Recreate it on each device; it is gitignored and not portable across OSes.
 set -euo pipefail
 
-Root="$(cd "$(dirname "$0")/.." && pwd)"
+Root="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$Root"
+Venv="$Root/research/.venv"
 
 if ! command -v uv >/dev/null 2>&1; then
   echo "uv is required. Install it from https://docs.astral.sh/uv/ and re-run." >&2
   exit 1
 fi
 
-echo "Creating .venv with Python 3.12 ..."
-uv venv .venv --python 3.12
+echo "Creating research/.venv with Python 3.12 ..."
+uv venv "$Venv" --python 3.12
 
-echo "Installing requirements (CPU/MPS PyTorch from PyPI) ..."
-uv pip install --python .venv/bin/python -r requirements.txt
+echo "Installing research requirements (CPU/MPS PyTorch from PyPI) ..."
+uv pip install --python "$Venv/bin/python" -r research/requirements.txt
 
 echo
-.venv/bin/python - <<'PY'
+"$Venv/bin/python" - <<'PY'
 import torch
 print("torch:", torch.__version__)
 print("mps:", torch.backends.mps.is_available())
@@ -39,5 +41,5 @@ for name in mods:
 PY
 
 echo
-echo "Done. Activate with: source .venv/bin/activate"
-echo "Training still needs the Windows CUDA machine, or: export HOOPQL_ALLOW_CPU=1"
+echo "Done. Activate with: source research/.venv/bin/activate"
+echo "Training still needs a CUDA machine, or: export HOOPQL_ALLOW_CPU=1"

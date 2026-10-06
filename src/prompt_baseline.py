@@ -236,7 +236,7 @@ def main():
     mode_tag = "fewshot" if args.mode == "few_shot" else "zeroshot"
     split_tag = "" if args.eval == "spider" or args.split == "all" else f"_{args.split}"
     out = args.output or (
-        f"eval/baseline_{args.eval}_{mode_tag}_{args.model.split('/')[-1]}{split_tag}.json"
+        f"research/results/runs/baseline_{args.eval}_{mode_tag}_{args.model.split('/')[-1]}{split_tag}.json"
     )
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:

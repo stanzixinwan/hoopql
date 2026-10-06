@@ -13,15 +13,15 @@ Pass `--split all` to reproduce the legacy 200-question evaluation.
 
 Usage:
     # T5-base LoRA, RAG retrieval, on the held-out test split
-    python -m src.evaluate --checkpoint models/lora_t5-base_r16/final \
+    python -m research.evaluate --checkpoint models/lora_t5-base_r16/final \
         --eval nba --use-rag --top-k 3
 
     # Flan-T5-large LoRA — must pass --base-model so the adapter loads
-    python -m src.evaluate --checkpoint models/lora_flan-t5-large_r16/final \
+    python -m research.evaluate --checkpoint models/lora_flan-t5-large_r16/final \
         --base-model google/flan-t5-large --eval nba --oracle-tables
 
     # Reproduce the old 200-question oracle eval (legacy)
-    python -m src.evaluate --checkpoint models/full_flan-t5-base/final \
+    python -m research.evaluate --checkpoint models/full_flan-t5-base/final \
         --eval nba --oracle-tables --split all
 """
 
@@ -37,7 +37,7 @@ from tqdm import tqdm
 from src.data_utils import (
     NBA_SPLIT_PATH, load_nba_dataset, load_nba_split_ids, load_spider_splits,
 )
-from src.gpu_env import require_cuda
+from research.gpu_env import require_cuda
 from src.prompt_baseline import (
     execution_accuracy,
     exact_match,
@@ -150,7 +150,7 @@ def main():
     parser.add_argument("--nba-questions", default="data/nba/nba_questions.json")
     parser.add_argument("--nba-db", default="data/raw/nba.sqlite")
     parser.add_argument("--max-examples", type=int, default=None)
-    parser.add_argument("--output-dir", default="eval")
+    parser.add_argument("--output-dir", default="research/results/runs")
     parser.add_argument("--oracle-tables", action="store_true",
                         help="Restrict NBA schema to gold tables (perfect retrieval)")
     parser.add_argument("--use-rag", action="store_true",

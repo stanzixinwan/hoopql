@@ -1,12 +1,13 @@
 """
-Plot RAG ablation summaries from eval/rag_e2e_summary.csv and eval/rag_retrieval_summary.csv.
+Plot RAG ablation summaries from research/results/rag_e2e_summary.csv
+and research/results/rag_retrieval_summary.csv.
 
 Outputs (PDF + PNG):
-  - reports/figures/rag_recall_vs_exec.pdf
-  - reports/figures/rag_backend_bars_k3.pdf
+  - research/figures/rag_recall_vs_exec.pdf
+  - research/figures/rag_backend_bars_k3.pdf
 
 Usage:
-  python scripts/plot_rag_ablation.py
+  python research/scripts/plot_rag_ablation.py
 """
 
 from __future__ import annotations
@@ -16,10 +17,10 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-ROOT = Path(__file__).resolve().parents[1]
-E2E_CSV = ROOT / "eval" / "rag_e2e_summary.csv"
-RETR_CSV = ROOT / "eval" / "rag_retrieval_summary.csv"
-FIG_DIR = ROOT / "reports" / "figures"
+ROOT = Path(__file__).resolve().parents[2]
+E2E_CSV = ROOT / "research" / "results" / "rag_e2e_summary.csv"
+RETR_CSV = ROOT / "research" / "results" / "rag_retrieval_summary.csv"
+FIG_DIR = ROOT / "research" / "figures"
 
 BACKENDS = ["dense", "bm25", "hybrid"]
 MARKERS = {"dense": "o", "bm25": "s", "hybrid": "^"}

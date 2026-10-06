@@ -7,10 +7,10 @@ Supports three methods:
   - qlora: QLoRA (4-bit quantized + LoRA)
 
 Usage:
-    python -m src.train --method full --model t5-base --epochs 3
-    python -m src.train --method full --model google/flan-t5-base --epochs 10
-    python -m src.train --method lora --model google/flan-t5-base --rank 16 --epochs 5
-    python -m src.train --method lora --model google/flan-t5-large --rank 16 --epochs 5 --batch-size 4
+    python -m research.train --method full --model t5-base --epochs 3
+    python -m research.train --method full --model google/flan-t5-base --epochs 10
+    python -m research.train --method lora --model google/flan-t5-base --rank 16 --epochs 5
+    python -m research.train --method lora --model google/flan-t5-large --rank 16 --epochs 5 --batch-size 4
 
 Outputs go to models/<run_name>/.
 """
@@ -20,21 +20,26 @@ import json
 import random
 from pathlib import Path
 
-import torch
-import numpy as np
-from transformers import (
-    AutoTokenizer, AutoModelForSeq2SeqLM,
-    Seq2SeqTrainer, Seq2SeqTrainingArguments,
-    DataCollatorForSeq2Seq,
-)
-from datasets import Dataset
 
-try:
+def _import_training_stack():
+    """Load torch and friends after argparse, so --help needs no ML stack."""
+    global torch, np, AutoTokenizer, AutoModelForSeq2SeqLM
+    global Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
+    global Dataset, load_spider_splits, require_cuda
+
+    import numpy as np
+    import torch
+    from datasets import Dataset
+    from transformers import (
+        AutoModelForSeq2SeqLM,
+        AutoTokenizer,
+        DataCollatorForSeq2Seq,
+        Seq2SeqTrainer,
+        Seq2SeqTrainingArguments,
+    )
+
+    from research.gpu_env import require_cuda
     from src.data_utils import load_spider_splits
-    from src.gpu_env import require_cuda
-except ModuleNotFoundError:
-    from data_utils import load_spider_splits
-    from gpu_env import require_cuda
 
 
 def load_tokenizer_with_fallback(model_name_or_path: str):
@@ -156,6 +161,7 @@ def main():
     parser.add_argument("--run-name", default=None)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
+    _import_training_stack()
 
     require_cuda()
     _set_seed(args.seed)

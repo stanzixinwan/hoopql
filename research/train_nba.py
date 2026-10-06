@@ -7,13 +7,13 @@ producing a domain-adapted model. This is the proposal's core experiment for
 
 Usage:
     # Full adaptation: all 70 NBA train examples
-    python -m src.train_nba \
+    python -m research.train_nba \
         --base-checkpoint models/lora_t5-base_r16/final \
         --base-model t5-base \
         --n-train all --epochs 10
 
     # Few-shot curve: 10 examples
-    python -m src.train_nba \
+    python -m research.train_nba \
         --base-checkpoint models/lora_t5-base_r16/final \
         --base-model t5-base \
         --n-train 10 --epochs 10
@@ -38,14 +38,9 @@ from transformers import (
 from datasets import Dataset
 from peft import PeftModel
 
-try:
-    from src.data_utils import load_nba_dataset
-    from src.gpu_env import require_cuda
-    from src.prompt_baseline import load_tokenizer_with_fallback
-except ModuleNotFoundError:
-    from data_utils import load_nba_dataset
-    from gpu_env import require_cuda
-    from prompt_baseline import load_tokenizer_with_fallback
+from research.gpu_env import require_cuda
+from src.data_utils import load_nba_dataset
+from src.prompt_baseline import load_tokenizer_with_fallback
 
 
 SPLIT_PATH = Path("data/nba/nba_split.json")
@@ -257,7 +252,7 @@ def main():
     tokenizer.save_pretrained(f"{output_dir}/final")
     print("Done.")
     print(f"\nNext: evaluate on the held-out NBA test split.")
-    print(f"  python -m src.evaluate --checkpoint {output_dir}/final \\")
+    print(f"  python -m research.evaluate --checkpoint {output_dir}/final \\")
     print(f"      --eval nba --oracle-tables")
 
 

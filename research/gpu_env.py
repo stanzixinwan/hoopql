@@ -19,7 +19,7 @@ def require_cuda() -> None:
     if torch.cuda.is_available():
         return
     print(
-        "ERROR: CUDA is not available. Install PyTorch with CUDA (see GPU_SETUP.md).\n"
+        "ERROR: CUDA is not available. Install PyTorch with CUDA.\n"
         "  Example: py -3.13 -m pip install torch --index-url "
         "https://download.pytorch.org/whl/cu124\n"
         "  Or set HOOPQL_ALLOW_CPU=1 to allow CPU (debug only).",

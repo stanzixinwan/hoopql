@@ -2,15 +2,15 @@
 Run retrieval-only + end-to-end NBA (test split) for dense / bm25 / hybrid × k ∈ {1,3,5}.
 
 Outputs:
-  - eval/rag_retrieval_summary.csv
-  - eval/rag_e2e_summary.csv
-  - eval/rag_recall_bins_summary.csv
-  - eval/*.json (via src.evaluate)
+  - research/results/rag_retrieval_summary.csv
+  - research/results/rag_e2e_summary.csv
+  - research/results/rag_recall_bins_summary.csv
+  - research/results/runs/*.json (via research.evaluate)
   - internal_docs/rag_failure_cases.md (10 failure examples from one config)
 
 Usage:
-  python scripts/run_rag_retrieval_ablation.py
-  python scripts/run_rag_retrieval_ablation.py --smoke   # max-examples 5, skip some combos optional
+  python research/scripts/run_rag_retrieval_ablation.py
+  python research/scripts/run_rag_retrieval_ablation.py --smoke   # max-examples 5, skip some combos optional
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from src.data_utils import NBA_SPLIT_PATH, load_nba_split_ids  # noqa: E402
@@ -93,12 +93,13 @@ def _checkpoint_tag_from_run_name(run_name: str) -> str:
     return "codet5p_spider_bs4"
 
 
-def aggregate_from_eval_json(eval_dir: Path) -> None:
-    """Build rag_e2e_summary.csv / rag_recall_bins_summary.md from existing eval JSON."""
+def aggregate_from_eval_json(results_dir: Path) -> None:
+    """Build summary CSVs from per-run JSON under results_dir/runs."""
+    runs_dir = results_dir / "runs"
     pattern = re.compile(r"(.+)_nba_rag_(\w+)_k(\d+)_test\.json$")
     e2e_rows = []
     bins_rows = []
-    for path in sorted(eval_dir.glob("*_nba_rag_*_test.json")):
+    for path in sorted(runs_dir.glob("*_nba_rag_*_test.json")):
         m = pattern.match(path.name)
         if not m:
             continue
@@ -125,7 +126,7 @@ def aggregate_from_eval_json(eval_dir: Path) -> None:
                 {"checkpoint_tag": tag, "backend": backend, "k": k, **b}
             )
 
-    e2e_path = eval_dir / "rag_e2e_summary.csv"
+    e2e_path = results_dir / "rag_e2e_summary.csv"
     with open(e2e_path, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(
             f,
@@ -144,7 +145,7 @@ def aggregate_from_eval_json(eval_dir: Path) -> None:
         w.writerows(sorted(e2e_rows, key=lambda r: (r["checkpoint_tag"], r["backend"], r["k"])))
     print(f"Saved {e2e_path} ({len(e2e_rows)} rows)")
 
-    bins_path = eval_dir / "rag_recall_bins_summary.csv"
+    bins_path = results_dir / "rag_recall_bins_summary.csv"
     with open(bins_path, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(
             f,
@@ -161,7 +162,7 @@ def aggregate_from_eval_json(eval_dir: Path) -> None:
         w.writerows(bins_rows)
     print(f"Saved {bins_path}")
 
-    primary = eval_dir / "lora_codet5p-220m_r16_nba_nall_s42_nba_rag_dense_k3_test.json"
+    primary = runs_dir / "lora_codet5p-220m_r16_nba_nall_s42_nba_rag_dense_k3_test.json"
     if primary.exists():
         with open(primary, encoding="utf-8") as f:
             pr = json.load(f)
@@ -206,27 +207,29 @@ def main() -> None:
     parser.add_argument(
         "--aggregate-only",
         action="store_true",
-        help="Only rebuild CSVs + failure cases from eval/*_nba_rag_*_test.json",
+        help="Only rebuild CSVs + failure cases from research/results/runs/*_nba_rag_*_test.json",
     )
     parser.add_argument("--questions", default="data/nba/nba_questions.json")
     parser.add_argument("--split-path", default=str(NBA_SPLIT_PATH))
-    parser.add_argument("--eval-dir", default="eval")
+    parser.add_argument("--eval-dir", default="research/results")
     args = parser.parse_args()
 
-    eval_dir = ROOT / args.eval_dir
+    results_dir = ROOT / args.eval_dir
+    runs_dir = results_dir / "runs"
     if args.aggregate_only:
-        aggregate_from_eval_json(eval_dir)
+        aggregate_from_eval_json(results_dir)
         return
 
     questions_path = ROOT / args.questions
     split_path = ROOT / args.split_path
-    eval_dir.mkdir(parents=True, exist_ok=True)
+    results_dir.mkdir(parents=True, exist_ok=True)
+    runs_dir.mkdir(parents=True, exist_ok=True)
 
     test_q = _test_questions(questions_path, split_path)
 
-    retr_path = eval_dir / "rag_retrieval_summary.csv"
-    e2e_path = eval_dir / "rag_e2e_summary.csv"
-    bins_path = eval_dir / "rag_recall_bins_summary.csv"
+    retr_path = results_dir / "rag_retrieval_summary.csv"
+    e2e_path = results_dir / "rag_e2e_summary.csv"
+    bins_path = results_dir / "rag_recall_bins_summary.csv"
 
     retr_rows = []
     for backend in BACKENDS:
@@ -273,7 +276,7 @@ def main() -> None:
                     cmd = [
                         sys.executable,
                         "-m",
-                        "src.evaluate",
+                        "research.evaluate",
                         "--checkpoint",
                         str(ckpt_p),
                         "--base-model",
@@ -290,14 +293,14 @@ def main() -> None:
                         "--split-path",
                         str(split_path),
                         "--output-dir",
-                        str(eval_dir),
+                        str(runs_dir),
                     ]
                     if max_ex:
                         cmd.extend(["--max-examples", max_ex])
                     print("Running:", " ".join(cmd))
                     subprocess.run(cmd, cwd=str(ROOT), check=True)
 
-                    out_json = eval_dir / f"{run_name}_nba_rag_{backend}_k{k}_test.json"
+                    out_json = runs_dir / f"{run_name}_nba_rag_{backend}_k{k}_test.json"
                     if not out_json.exists():
                         print(f"Missing output {out_json}")
                         continue
@@ -362,9 +365,9 @@ def main() -> None:
         print(f"Saved {bins_path}")
 
         # Failure cases: prefer nba_nall, k=3, dense if present
-        primary = eval_dir / "lora_codet5p-220m_r16_nba_nall_s42_nba_rag_dense_k3_test.json"
+        primary = runs_dir / "lora_codet5p-220m_r16_nba_nall_s42_nba_rag_dense_k3_test.json"
         if not primary.exists() and e2e_rows:
-            primary = eval_dir / e2e_rows[-1]["json"]
+            primary = runs_dir / e2e_rows[-1]["json"]
         if primary.exists():
             with open(primary, encoding="utf-8") as f:
                 pr = json.load(f)
