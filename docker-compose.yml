@@ -14,13 +14,15 @@ services:
       retries: 10
     volumes:
       - ./etl/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./etl/roles.sql:/docker-entrypoint-initdb.d/02-roles.sql:ro
 
   api:
     build: .
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://hoopql:hoopql@postgres:5432/hoopql
+      DATABASE_URL: postgresql://hoopql_readonly:hoopql_readonly@postgres:5432/hoopql
+      ETL_DATABASE_URL: postgresql://hoopql:hoopql@postgres:5432/hoopql
     depends_on:
       postgres:
         condition: service_healthy
