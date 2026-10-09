@@ -15,8 +15,9 @@ class ConfigError(RuntimeError):
     pass
 
 
-def load_env_file(path: Path = ENV_FILE) -> None:
+def load_env_file(path: Path | None = None) -> None:
     """Copy KEY=value lines from .env into os.environ without overriding real env vars."""
+    path = path or ENV_FILE
     if not path.exists():
         return
     for line in path.read_text().splitlines():
