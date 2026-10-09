@@ -5,9 +5,16 @@ description = "Natural-language queries over NBA player game logs"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "anthropic>=1.13.0",
     "fastapi>=0.115",
+    "fastembed>=0.9.0",
     "nba-api>=1.11.4",
+    "numpy>=2.5.3",
+    "openai>=3.27.0",
+    "psycopg-pool>=3.3.3",
     "psycopg[binary]>=3.3.6",
+    "rank-bm25>=0.2.2",
+    "sqlglot>=30.22.0",
     "uvicorn>=0.32",
 ]
 
@@ -26,3 +33,7 @@ packages = ["core", "app", "etl"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+addopts = "-m 'not live'"
+markers = [
+    "live: calls a real LLM provider; run with `uv run pytest -m live`",
+]
