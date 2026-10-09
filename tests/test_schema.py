@@ -26,6 +26,8 @@ EXPECTED_INDEXES = {
     "player_game_log_season_idx",
     "team_game_log_team_id_game_date_idx",
     "team_game_log_season_idx",
+    "player_full_name_trgm_idx",
+    "team_full_name_trgm_idx",
 }
 
 

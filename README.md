@@ -18,7 +18,11 @@ docker compose up --build
 
 Postgres listens on `localhost:5432`. The API listens on `http://localhost:8000` and connects as `hoopql_readonly` (`DATABASE_URL`). Ingestion connects as the database owner (`ETL_DATABASE_URL`). `GET /health` returns `{"status":"ok"}`. The question endpoint is not built yet.
 
-A new Postgres volume applies `etl/schema.sql` and `etl/roles.sql` on first start. `docker compose down -v` recreates that volume and deletes loaded data.
+A new Postgres volume applies `etl/schema.sql`, `etl/roles.sql`, and `etl/migrations/` on first start. `docker compose down -v` recreates that volume and deletes loaded data. To apply a new migration to an existing volume without reloading:
+
+```bash
+docker compose exec -T postgres psql -U hoopql -d hoopql -v ON_ERROR_STOP=1 < etl/migrations/001_name_search.sql
+```
 
 `make dev` is the same Compose command. `make test` runs the unit tests. `make eval` is reserved for the evaluation runner.
 

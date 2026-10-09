@@ -15,6 +15,7 @@ services:
     volumes:
       - ./etl/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ./etl/roles.sql:/docker-entrypoint-initdb.d/02-roles.sql:ro
+      - ./etl/migrations/001_name_search.sql:/docker-entrypoint-initdb.d/03-name-search.sql:ro
 
   api:
     build: .

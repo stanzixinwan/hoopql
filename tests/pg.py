@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_SQL = ROOT / "etl" / "schema.sql"
+MIGRATIONS_DIR = ROOT / "etl" / "migrations"
 
 
 class PostgresError(RuntimeError):
@@ -82,3 +83,5 @@ def recreate_database(name: str) -> None:
 
 def apply_schema(database: str) -> None:
     apply_sql(SCHEMA_SQL.read_text(), database)
+    for migration in sorted(MIGRATIONS_DIR.glob("*.sql")):
+        apply_sql(migration.read_text(), database)
