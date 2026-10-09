@@ -12,8 +12,8 @@ import psycopg
 from core.config import database_url
 
 DEFAULT_TTL_S = 300.0
-# Ingestion bookkeeping. Never shown to the model.
-HIDDEN_TABLES = frozenset({"etl_run", "etl_checkpoint"})
+# Ingestion bookkeeping, plus play_by_play until it is loaded. Never shown to the model.
+HIDDEN_TABLES = frozenset({"etl_run", "etl_checkpoint", "play_by_play"})
 
 COLUMNS_SQL = """
 SELECT c.table_name,

@@ -21,6 +21,7 @@ def test_product_tables_are_visible_and_etl_tables_are_not(schema) -> None:
     assert {"player", "team", "game", "player_game_log", "team_game_log"} <= names
     assert "etl_run" not in names
     assert "etl_checkpoint" not in names
+    assert "play_by_play" not in names
 
 
 def test_columns_carry_types_and_comments(schema) -> None:
