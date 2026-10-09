@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1001,
+    "question": "How many threes did Stephen Curry make in the 2015-16 regular season?",
+    "sql": "SELECT SUM(fg3m) FROM player_game_log WHERE player_id = 201939 AND season = '2015-16' AND season_type = 'Regular Season';",
+    "tables": ["player_game_log"],
+    "difficulty": "easy"
+  },
+  {
+    "id": 1002,
+    "question": "What were Kobe Bryant's five highest-scoring games?",
+    "sql": "SELECT game_date, pts FROM player_game_log WHERE player_id = 977 ORDER BY pts DESC, game_date LIMIT 5;",
+    "tables": ["player_game_log"],
+    "difficulty": "easy"
+  },
+  {
+    "id": 1003,
+    "question": "Who were the top five scorers by points per game in the 2022-23 regular season, minimum 58 games?",
+    "sql": "SELECT p.full_name, ROUND(AVG(l.pts), 1) AS ppg, COUNT(*) AS games FROM player_game_log l JOIN player p USING (player_id) WHERE l.season = '2022-23' AND l.season_type = 'Regular Season' GROUP BY p.full_name HAVING COUNT(*) >= 58 ORDER BY ppg DESC LIMIT 5;",
+    "tables": ["player", "player_game_log"],
+    "difficulty": "medium"
+  },
+  {
+    "id": 1004,
+    "question": "How many triple-doubles did Nikola Jokic have in the 2023-24 regular season?",
+    "sql": "SELECT COUNT(*) FROM player_game_log WHERE player_id = 203999 AND season = '2023-24' AND season_type = 'Regular Season' AND pts >= 10 AND reb >= 10 AND ast >= 10;",
+    "tables": ["player_game_log"],
+    "difficulty": "medium"
+  },
+  {
+    "id": 1005,
+    "question": "Which players had the most 40-point games in the 2023-24 regular season?",
+    "sql": "SELECT p.full_name, COUNT(*) AS forty_point_games FROM player_game_log l JOIN player p USING (player_id) WHERE l.season = '2023-24' AND l.season_type = 'Regular Season' AND l.pts >= 40 GROUP BY p.full_name ORDER BY forty_point_games DESC, p.full_name LIMIT 5;",
+    "tables": ["player", "player_game_log"],
+    "difficulty": "medium"
+  },
+  {
+    "id": 1006,
+    "question": "What is LeBron James's career playoff scoring average?",
+    "sql": "SELECT ROUND(AVG(pts), 1) FROM player_game_log WHERE player_id = 2544 AND season_type = 'Playoffs';",
+    "tables": ["player_game_log"],
+    "difficulty": "easy"
+  },
+  {
+    "id": 1007,
+    "question": "How did Giannis Antetokounmpo's scoring compare at home and on the road in the 2023-24 regular season?",
+    "sql": "SELECT CASE WHEN is_home THEN 'home' ELSE 'away' END AS venue, ROUND(AVG(pts), 1) AS ppg, COUNT(*) AS games FROM player_game_log WHERE player_id = 203507 AND season = '2023-24' AND season_type = 'Regular Season' GROUP BY is_home ORDER BY venue;",
+    "tables": ["player_game_log"],
+    "difficulty": "hard"
+  },
+  {
+    "id": 1008,
+    "question": "Which players shot the best from three in the 2024-25 regular season, minimum 300 attempts?",
+    "sql": "SELECT p.full_name, SUM(l.fg3m) AS made, SUM(l.fg3a) AS attempts, ROUND(SUM(l.fg3m)::numeric / SUM(l.fg3a), 3) AS fg3_pct FROM player_game_log l JOIN player p USING (player_id) WHERE l.season = '2024-25' AND l.season_type = 'Regular Season' GROUP BY p.full_name HAVING SUM(l.fg3a) >= 300 ORDER BY fg3_pct DESC LIMIT 10;",
+    "tables": ["player", "player_game_log"],
+    "difficulty": "hard"
+  },
+  {
+    "id": 1009,
+    "question": "What was Luka Doncic's scoring average in each month of the 2023-24 regular season?",
+    "sql": "SELECT date_trunc('month', game_date)::date AS month, ROUND(AVG(pts), 1) AS ppg, COUNT(*) AS games FROM player_game_log WHERE player_id = 1629029 AND season = '2023-24' AND season_type = 'Regular Season' GROUP BY 1 ORDER BY 1;",
+    "tables": ["player_game_log"],
+    "difficulty": "hard"
+  },
+  {
+    "id": 1010,
+    "question": "Which players averaged a double-double in points and rebounds in the 2022-23 playoffs, minimum 10 games?",
+    "sql": "SELECT p.full_name, ROUND(AVG(l.pts), 1) AS ppg, ROUND(AVG(l.reb), 1) AS rpg, COUNT(*) AS games FROM player_game_log l JOIN player p USING (player_id) WHERE l.season = '2022-23' AND l.season_type = 'Playoffs' GROUP BY p.full_name HAVING COUNT(*) >= 10 AND AVG(l.pts) >= 10 AND AVG(l.reb) >= 10 ORDER BY rpg DESC;",
+    "tables": ["player", "player_game_log"],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 1011,
+    "question": "Which Boston Celtics player scored the most total points against the Miami Heat across all playoff games?",
+    "sql": "SELECT p.full_name, SUM(l.pts) AS points FROM player_game_log l JOIN player p USING (player_id) JOIN game g USING (game_id) WHERE l.team_id = 1610612738 AND l.season_type = 'Playoffs' AND 1610612748 IN (g.home_team_id, g.away_team_id) GROUP BY p.full_name ORDER BY points DESC LIMIT 1;",
+    "tables": ["game", "player", "player_game_log"],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 1012,
+    "question": "Which players had the longest streaks of consecutive 30-point games in the 2024-25 regular season?",
+    "sql": "WITH games AS (SELECT player_id, game_date, pts >= 30 AS hit, ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY game_date) - ROW_NUMBER() OVER (PARTITION BY player_id, pts >= 30 ORDER BY game_date) AS grp FROM player_game_log WHERE season = '2024-25' AND season_type = 'Regular Season'), streaks AS (SELECT player_id, COUNT(*) AS streak FROM games WHERE hit GROUP BY player_id, grp) SELECT p.full_name, MAX(s.streak) AS longest_streak FROM streaks s JOIN player p USING (player_id) GROUP BY p.full_name ORDER BY longest_streak DESC, p.full_name LIMIT 5;",
+    "tables": ["player", "player_game_log"],
+    "difficulty": "extra_hard"
+  }
+]
