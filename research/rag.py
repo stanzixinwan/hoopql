@@ -7,9 +7,9 @@ Backends:
   - hybrid: RRF fusion of dense + BM25 rankings (no extra re-ranker)
 
 Usage:
-    python -m src.rag --build              # dense FAISS index
-    python -m src.rag --build-bm25         # BM25 index (same documents)
-    python -m src.rag --eval-retrieval --top-k 3 --backend dense
+    python -m research.rag --build              # dense FAISS index
+    python -m research.rag --build-bm25         # BM25 index (same documents)
+    python -m research.rag --eval-retrieval --top-k 3 --backend dense
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from typing import Optional, Protocol, Union
 
 import numpy as np
 
-from src.data_utils import (
+from research.data_utils import (
     NBA_CORE_TABLES,
     build_nba_schema_documents,
     format_input,

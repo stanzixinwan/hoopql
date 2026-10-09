@@ -26,8 +26,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from src.data_utils import NBA_SPLIT_PATH, load_nba_split_ids  # noqa: E402
-from src.rag import evaluate_retrieval  # noqa: E402
+from research.data_utils import NBA_SPLIT_PATH, load_nba_split_ids  # noqa: E402
+from research.rag import evaluate_retrieval  # noqa: E402
 
 BACKENDS = ["dense", "bm25", "hybrid"]
 KS = [1, 3, 5]

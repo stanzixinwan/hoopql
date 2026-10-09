@@ -39,8 +39,8 @@ from datasets import Dataset
 from peft import PeftModel
 
 from research.gpu_env import require_cuda
-from src.data_utils import load_nba_dataset
-from src.prompt_baseline import load_tokenizer_with_fallback
+from research.data_utils import load_nba_dataset
+from research.prompt_baseline import load_tokenizer_with_fallback
 
 
 SPLIT_PATH = Path("data/nba/nba_split.json")

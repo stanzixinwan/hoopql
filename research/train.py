@@ -39,7 +39,7 @@ def _import_training_stack():
     )
 
     from research.gpu_env import require_cuda
-    from src.data_utils import load_spider_splits
+    from research.data_utils import load_spider_splits
 
 
 def load_tokenizer_with_fallback(model_name_or_path: str):

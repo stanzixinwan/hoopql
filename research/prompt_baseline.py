@@ -4,8 +4,8 @@ prompt_baseline.py — Zero-shot prompting baseline.
 Uses AutoTokenizer/AutoModelForSeq2SeqLM so it works for T5, Flan-T5, CodeT5 alike.
 
 Usage:
-    python -m src.prompt_baseline --model t5-base --eval nba
-    python -m src.prompt_baseline --model google/flan-t5-base --eval nba
+    python -m research.prompt_baseline --model t5-base --eval nba
+    python -m research.prompt_baseline --model google/flan-t5-base --eval nba
 """
 
 import argparse
@@ -18,7 +18,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from tqdm import tqdm
 
-from src.data_utils import (
+from research.data_utils import (
     NBA_SPLIT_PATH,
     load_nba_dataset,
     load_nba_split_ids,

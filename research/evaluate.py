@@ -34,11 +34,11 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from tqdm import tqdm
 
-from src.data_utils import (
+from research.data_utils import (
     NBA_SPLIT_PATH, load_nba_dataset, load_nba_split_ids, load_spider_splits,
 )
 from research.gpu_env import require_cuda
-from src.prompt_baseline import (
+from research.prompt_baseline import (
     execution_accuracy,
     exact_match,
     generate_sql,
@@ -121,7 +121,7 @@ def evaluate(model, tokenizer, examples, db_path, device, eval_name: str):
 def load_nba_examples(args):
     """Pick the NBA loader based on flags. Mutually exclusive: oracle vs RAG."""
     if args.use_rag:
-        from src.rag import load_nba_dataset_with_rag
+        from research.rag import load_nba_dataset_with_rag
         print(
             f"NBA mode: RAG backend={args.rag_backend!r} top-{args.top_k}"
         )
@@ -159,7 +159,7 @@ def main():
         "--rag-backend",
         default="dense",
         choices=["dense", "bm25", "hybrid"],
-        help="Retriever when --use-rag (build indices via python -m src.rag --build [--build-bm25])",
+        help="Retriever when --use-rag (build indices via python -m research.rag --build [--build-bm25])",
     )
     parser.add_argument("--top-k", type=int, default=3)
     parser.add_argument("--split", choices=["test", "train", "all"], default="test",

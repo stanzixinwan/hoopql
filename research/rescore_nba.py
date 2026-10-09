@@ -26,7 +26,7 @@ from collections import defaultdict
 from pathlib import Path
 
 try:
-    from src.data_utils import NBA_SPLIT_PATH, load_nba_split_ids
+    from research.data_utils import NBA_SPLIT_PATH, load_nba_split_ids
 except ModuleNotFoundError:
     from data_utils import NBA_SPLIT_PATH, load_nba_split_ids
 
