@@ -1,0 +1,1030 @@
+[
+  {
+    "id": 1,
+    "question": "How many teams are in the NBA?",
+    "sql": "SELECT COUNT(*) FROM team;",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 4,
+    "question": "How many players are currently active?",
+    "sql": "SELECT COUNT(*) FROM player WHERE is_active;",
+    "tables": [
+      "player"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 6,
+    "question": "How many home games did the Lakers play in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Los Angeles Lakers' AND g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 7,
+    "question": "What is the average points scored by the Warriors at home in the 2022-23 regular season?",
+    "sql": "SELECT AVG(g.home_score) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Golden State Warriors' AND g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 9,
+    "question": "List the top 5 teams by total home wins in the 2022-23 regular season.",
+    "sql": "SELECT h.full_name, COUNT(*) AS wins FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.home_score > g.away_score AND g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY wins DESC LIMIT 5;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 11,
+    "question": "Which team had the highest average home points per game in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(g.home_score) AS avg_pts FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY avg_pts DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 13,
+    "question": "Which teams had a home win rate above 70% in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(CASE WHEN g.home_score > g.away_score THEN 1.0 ELSE 0 END) AS win_rate FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name HAVING AVG(CASE WHEN g.home_score > g.away_score THEN 1.0 ELSE 0 END) > 0.7 ORDER BY win_rate DESC;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 15,
+    "question": "How many regular season games did the Celtics win against the Lakers since the 2010-11 season?",
+    "sql": "SELECT COUNT(*) FROM team_game_log l JOIN team t ON t.team_id = l.team_id JOIN team o ON o.team_id = l.opponent_team_id WHERE t.full_name = 'Boston Celtics' AND o.full_name = 'Los Angeles Lakers' AND l.wl = 'W' AND l.season_type = 'Regular Season' AND l.season >= '2010-11';",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 16,
+    "question": "Which team had the highest average 3-point percentage at home across all playoff games since 1996-97?",
+    "sql": "SELECT t.full_name, AVG(l.fg3_pct) AS avg_3p FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season_type = 'Playoffs' AND l.fg3_pct IS NOT NULL GROUP BY t.full_name ORDER BY avg_3p DESC LIMIT 1;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 17,
+    "question": "List the 10 highest-scoring home team performances since 1996-97.",
+    "sql": "SELECT g.game_date, h.full_name AS home_team, g.home_score, a.full_name AS away_team, g.away_score FROM game g JOIN team h ON h.team_id = g.home_team_id JOIN team a ON a.team_id = g.away_team_id ORDER BY g.home_score DESC, g.game_date LIMIT 10;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 18,
+    "question": "Find teams whose average home points in the 2022-23 regular season exceeded their own average home points in the 2021-22 season.",
+    "sql": "WITH cur AS (SELECT h.full_name, AVG(g.home_score) AS avg_pts FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name), prev AS (SELECT h.full_name, AVG(g.home_score) AS avg_pts FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2021-22' AND g.season_type = 'Regular Season' GROUP BY h.full_name) SELECT cur.full_name FROM cur JOIN prev USING (full_name) WHERE cur.avg_pts > prev.avg_pts ORDER BY cur.full_name;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 20,
+    "question": "For the 2022-23 regular season, which team had the largest average point differential when playing at home?",
+    "sql": "SELECT h.full_name, AVG(g.home_score - g.away_score) AS avg_diff FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY avg_diff DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 23,
+    "question": "What is the abbreviation for the Miami Heat?",
+    "sql": "SELECT abbreviation FROM team WHERE full_name = 'Miami Heat';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 25,
+    "question": "List the cities of teams whose nickname is 'Bulls'.",
+    "sql": "SELECT city FROM team WHERE nickname = 'Bulls';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 26,
+    "question": "How many NBA players are no longer active?",
+    "sql": "SELECT COUNT(*) FROM player WHERE NOT is_active;",
+    "tables": [
+      "player"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 27,
+    "question": "What is Stephen Curry's full name?",
+    "sql": "SELECT full_name FROM player WHERE first_name = 'Stephen' AND last_name = 'Curry';",
+    "tables": [
+      "player"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 29,
+    "question": "How many regular season games were played in the 2021-22 season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2021-22' AND season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 30,
+    "question": "How many playoff games are recorded for 2022-23 season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2022-23' AND season_type = 'Playoffs';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 31,
+    "question": "What different types of games are recorded in the NBA?",
+    "sql": "SELECT DISTINCT season_type FROM game ORDER BY season_type;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 32,
+    "question": "How many players are currently on an NBA roster?",
+    "sql": "SELECT COUNT(*) FROM player WHERE is_active;",
+    "tables": [
+      "player"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 35,
+    "question": "In the 2022-23 regular season, how many home games did the Boston Celtics play?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Boston Celtics' AND g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 36,
+    "question": "What was the average home points per game for the Milwaukee Bucks at home in the 2022-23 regular season?",
+    "sql": "SELECT AVG(g.home_score) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Milwaukee Bucks' AND g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 37,
+    "question": "Which team had the most total home losses in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, COUNT(*) AS losses FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.home_score < g.away_score AND g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY losses DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 38,
+    "question": "How many games in the 2022-23 regular season ended with the home team scoring at least 130 points?",
+    "sql": "SELECT COUNT(*) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score >= 130;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 39,
+    "question": "List the top 3 teams by average assists at home in the 2022-23 regular season.",
+    "sql": "SELECT t.full_name, AVG(l.ast) AS avg_ast FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' GROUP BY t.full_name ORDER BY avg_ast DESC LIMIT 3;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 45,
+    "question": "In the 2021-22 regular season, what was the average total points scored in a game (home + away)?",
+    "sql": "SELECT AVG(g.home_score + g.away_score) FROM game g WHERE g.season = '2021-22' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 46,
+    "question": "How many regular season games in 2022-23 went to overtime?",
+    "sql": "SELECT COUNT(*) FROM team_game_log l WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.minutes > 240;",
+    "tables": [
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 47,
+    "question": "Which 5 teams had the most home games with at least 20 three-pointers made in the 2022-23 regular season?",
+    "sql": "SELECT t.full_name, COUNT(*) AS games FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.fg3m >= 20 GROUP BY t.full_name ORDER BY games DESC LIMIT 5;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 48,
+    "question": "What is the maximum single-game home team rebound total in the 2022-23 regular season?",
+    "sql": "SELECT MAX(l.reb) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 54,
+    "question": "In the 2022-23 regular season, how many times did the home team score exactly 120 points?",
+    "sql": "SELECT COUNT(*) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score = 120;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 55,
+    "question": "Which two teams played in the game with the highest combined points in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name AS home_team, a.full_name AS away_team, g.home_score + g.away_score AS total_pts FROM game g JOIN team h ON h.team_id = g.home_team_id JOIN team a ON a.team_id = g.away_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' ORDER BY total_pts DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 57,
+    "question": "Which team allowed the fewest points per game at home during the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(g.away_score) AS opp_ppg FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY opp_ppg ASC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 61,
+    "question": "Which team had the best free throw percentage at home in the 2022-23 regular season, among teams with at least 41 home games?",
+    "sql": "SELECT t.full_name, AVG(l.ft_pct) AS avg_ft FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.ft_pct IS NOT NULL GROUP BY t.full_name HAVING COUNT(*) >= 41 ORDER BY avg_ft DESC LIMIT 1;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 62,
+    "question": "How many 2022-23 regular season games had both teams score at least 120 points?",
+    "sql": "SELECT COUNT(*) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score >= 120 AND g.away_score >= 120;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 64,
+    "question": "Which active players are currently on the Phoenix Suns?",
+    "sql": "SELECT p.full_name FROM player p JOIN team t ON t.team_id = p.team_id WHERE t.nickname = 'Suns' AND p.is_active ORDER BY p.full_name LIMIT 20;",
+    "tables": [
+      "player",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 65,
+    "question": "In the 2021-22 regular season, how many home games did the Golden State Warriors win?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Golden State Warriors' AND g.season = '2021-22' AND g.season_type = 'Regular Season' AND g.home_score > g.away_score;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 66,
+    "question": "What was the average of the 5th and 6th highest home scores for the Denver Nuggets in the 2022-23 regular season?",
+    "sql": "SELECT AVG(home_score) FROM (SELECT g.home_score FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Denver Nuggets' AND g.season = '2022-23' AND g.season_type = 'Regular Season' ORDER BY g.home_score DESC LIMIT 2 OFFSET 4) top;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 67,
+    "question": "Find teams that lost at home by 30 or more points at least once in the 2022-23 regular season (home score minus away score <= -30).",
+    "sql": "SELECT DISTINCT h.full_name FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score - g.away_score <= -30 ORDER BY h.full_name LIMIT 10;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 69,
+    "question": "Which away team won the most road games in the 2022-23 regular season?",
+    "sql": "SELECT a.full_name, COUNT(*) AS road_wins FROM game g JOIN team a ON a.team_id = g.away_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.away_score > g.home_score GROUP BY a.full_name ORDER BY road_wins DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 71,
+    "question": "Which team had the worst home record in the 2020-21 regular season?",
+    "sql": "SELECT h.full_name, AVG(CASE WHEN g.home_score > g.away_score THEN 1.0 ELSE 0 END) AS win_pct FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2020-21' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY win_pct ASC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 72,
+    "question": "In which 2022-23 regular season home games did the Denver Nuggets score at least 140 points?",
+    "sql": "SELECT g.game_id, g.home_score FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Denver Nuggets' AND g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score >= 140 ORDER BY g.home_score DESC;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 75,
+    "question": "Which team improved its average home scoring margin the most from the 2021-22 to the 2022-23 regular season?",
+    "sql": "WITH cur AS (SELECT h.full_name, AVG(g.home_score - g.away_score) AS margin FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name), prev AS (SELECT h.full_name, AVG(g.home_score - g.away_score) AS margin FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2021-22' AND g.season_type = 'Regular Season' GROUP BY h.full_name) SELECT cur.full_name, cur.margin - prev.margin AS improvement FROM cur JOIN prev USING (full_name) ORDER BY improvement DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 77,
+    "question": "What was the league-wide average home points per game for the 2020-21, 2021-22, and 2022-23 regular seasons?",
+    "sql": "SELECT g.season, AVG(g.home_score) AS league_avg_home_pts FROM game g WHERE g.season IN ('2020-21', '2021-22', '2022-23') AND g.season_type = 'Regular Season' GROUP BY g.season ORDER BY g.season;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 78,
+    "question": "Which 2022-23 regular season games had the home team grab at least 55 rebounds?",
+    "sql": "SELECT l.game_id, t.full_name, l.reb FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.reb >= 55 ORDER BY l.reb DESC LIMIT 10;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 79,
+    "question": "Which 5 teams had the most variable home scoring in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, VAR_POP(g.home_score) AS variance FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY variance DESC LIMIT 5;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 80,
+    "question": "Which team had the biggest gap between their highest and lowest home scores in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, MAX(g.home_score) - MIN(g.home_score) AS spread FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY spread DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 82,
+    "question": "List 5 different opponents the Lakers faced at home in the 2022-23 regular season.",
+    "sql": "SELECT DISTINCT a.full_name FROM game g JOIN team h ON h.team_id = g.home_team_id JOIN team a ON a.team_id = g.away_team_id WHERE h.full_name = 'Los Angeles Lakers' AND g.season = '2022-23' AND g.season_type = 'Regular Season' ORDER BY a.full_name LIMIT 5;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 85,
+    "question": "Which 3 teams had the best home winning percentage in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(CASE WHEN g.home_score > g.away_score THEN 1.0 ELSE 0 END) AS home_win_rate FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY home_win_rate DESC LIMIT 3;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 88,
+    "question": "What was the average number of turnovers by the home team per game in the 2022-23 regular season?",
+    "sql": "SELECT AVG(l.tov) FROM team_game_log l WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team_game_log"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 92,
+    "question": "How many home games did the Chicago Bulls play in the 2022-23 season, regular season and playoffs combined?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Chicago Bulls' AND g.season = '2022-23';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 93,
+    "question": "How many different teams played in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(DISTINCT l.team_id) FROM team_game_log l WHERE l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team_game_log"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 94,
+    "question": "What were the dates of the Boston Celtics' first 5 home games in the 2022-23 regular season?",
+    "sql": "SELECT g.game_date FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Boston Celtics' AND g.season = '2022-23' AND g.season_type = 'Regular Season' ORDER BY g.game_date LIMIT 5;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 95,
+    "question": "How many times in the 2022-23 regular season did the home team win while scoring at least 115 points and holding the opponent under 100?",
+    "sql": "SELECT COUNT(*) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score > g.away_score AND g.home_score >= 115 AND g.away_score < 100;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 98,
+    "question": "Which team had the median average home points per game in the 2022-23 regular season?",
+    "sql": "SELECT full_name FROM (SELECT h.full_name, ROW_NUMBER() OVER (ORDER BY AVG(g.home_score)) AS rn, COUNT(*) OVER () AS n FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name) ranked WHERE rn = (n + 1) / 2;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 99,
+    "question": "How many road games did the Lakers win in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team a ON a.team_id = g.away_team_id WHERE a.full_name = 'Los Angeles Lakers' AND g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.away_score > g.home_score;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 100,
+    "question": "Were there any days in the 2022-23 regular season where the same team played two home games on the same date?",
+    "sql": "SELECT COUNT(*) FROM game x JOIN game y ON x.game_date = y.game_date AND x.home_team_id = y.home_team_id AND x.game_id < y.game_id WHERE x.season = '2022-23' AND x.season_type = 'Regular Season' AND y.season = '2022-23' AND y.season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 102,
+    "question": "What is the city of the Chicago Bulls?",
+    "sql": "SELECT city FROM team WHERE full_name = 'Chicago Bulls';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 103,
+    "question": "List all team nicknames.",
+    "sql": "SELECT nickname FROM team ORDER BY nickname;",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 104,
+    "question": "How many NBA teams are there in total?",
+    "sql": "SELECT COUNT(*) FROM team;",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 105,
+    "question": "What is the abbreviation for the Golden State Warriors?",
+    "sql": "SELECT abbreviation FROM team WHERE full_name = 'Golden State Warriors';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 107,
+    "question": "List the names of all teams ordered alphabetically.",
+    "sql": "SELECT full_name FROM team ORDER BY full_name;",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 109,
+    "question": "What is Kobe Bryant's full name?",
+    "sql": "SELECT full_name FROM player WHERE first_name = 'Kobe' AND last_name = 'Bryant';",
+    "tables": [
+      "player"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 110,
+    "question": "How many players have the first name Michael?",
+    "sql": "SELECT COUNT(*) FROM player WHERE first_name = 'Michael';",
+    "tables": [
+      "player"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 129,
+    "question": "How many games were played in the 2020-21 regular season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2020-21' AND season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 130,
+    "question": "How many games were played in the 2019-20 regular season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2019-20' AND season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 131,
+    "question": "How many playoff games were played in the 2021-22 season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2021-22' AND season_type = 'Playoffs';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 137,
+    "question": "How many teams have a nickname starting with the letter S?",
+    "sql": "SELECT COUNT(*) FROM team WHERE nickname LIKE 'S%';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 138,
+    "question": "How many teams have a nickname starting with the letter B?",
+    "sql": "SELECT COUNT(*) FROM team WHERE nickname LIKE 'B%';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 139,
+    "question": "What is the abbreviation for the Phoenix Suns?",
+    "sql": "SELECT abbreviation FROM team WHERE full_name = 'Phoenix Suns';",
+    "tables": [
+      "team"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 146,
+    "question": "How many games are recorded in the 2018-19 season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2018-19';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 147,
+    "question": "How many games are recorded in the 2019-20 season?",
+    "sql": "SELECT COUNT(*) FROM game WHERE season = '2019-20';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "easy"
+  },
+  {
+    "id": 151,
+    "question": "How many home games did the Heat play in the 2021-22 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Miami Heat' AND g.season = '2021-22' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 152,
+    "question": "How many home games did the Bucks play in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Milwaukee Bucks' AND g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 153,
+    "question": "What was the average rebounds for the Lakers at home in the 2022-23 regular season?",
+    "sql": "SELECT AVG(l.reb) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND t.full_name = 'Los Angeles Lakers';",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 154,
+    "question": "What was the average assists for the Warriors at home in the 2022-23 regular season?",
+    "sql": "SELECT AVG(l.ast) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND t.full_name = 'Golden State Warriors';",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 155,
+    "question": "How many home wins did the Celtics have in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Boston Celtics' AND g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score > g.away_score;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 156,
+    "question": "How many home losses did the Pistons have in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Detroit Pistons' AND g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score < g.away_score;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 157,
+    "question": "What is the maximum points scored by a home team in the 2022-23 regular season?",
+    "sql": "SELECT MAX(g.home_score) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 158,
+    "question": "What is the minimum points scored by a home team in the 2022-23 regular season?",
+    "sql": "SELECT MIN(g.home_score) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 159,
+    "question": "What were the top 5 teams by average home points in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(g.home_score) AS avg_pts FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY avg_pts DESC LIMIT 5;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 160,
+    "question": "What were the top 5 teams by total home rebounds in the 2022-23 regular season?",
+    "sql": "SELECT t.full_name, SUM(l.reb) AS total_reb FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' GROUP BY t.full_name ORDER BY total_reb DESC LIMIT 5;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 161,
+    "question": "How many games in the 2021-22 regular season had a home team score below 90?",
+    "sql": "SELECT COUNT(*) FROM game g WHERE g.season = '2021-22' AND g.season_type = 'Regular Season' AND g.home_score < 90;",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 162,
+    "question": "How many home wins did the Bucks have in the 2021-22 regular season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Milwaukee Bucks' AND g.season = '2021-22' AND g.season_type = 'Regular Season' AND g.home_score > g.away_score;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 168,
+    "question": "How many active players play for the Lakers?",
+    "sql": "SELECT COUNT(*) FROM player p JOIN team t ON t.team_id = p.team_id WHERE t.nickname = 'Lakers' AND p.is_active;",
+    "tables": [
+      "player",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 169,
+    "question": "How many active players play for the Warriors?",
+    "sql": "SELECT COUNT(*) FROM player p JOIN team t ON t.team_id = p.team_id WHERE t.nickname = 'Warriors' AND p.is_active;",
+    "tables": [
+      "player",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 172,
+    "question": "How many home games in the 2022-23 regular season had at least 30 assists by the home team?",
+    "sql": "SELECT COUNT(*) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.ast >= 30;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 173,
+    "question": "How many home games in the 2022-23 regular season had at least 15 three-pointers made by the home team?",
+    "sql": "SELECT COUNT(*) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.fg3m >= 15;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 174,
+    "question": "What was the highest field goal percentage at home in the 2022-23 regular season?",
+    "sql": "SELECT MAX(l.fg_pct) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 175,
+    "question": "What was the average free throw percentage at home in the 2022-23 regular season?",
+    "sql": "SELECT AVG(l.ft_pct) FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.ft_pct IS NOT NULL;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 176,
+    "question": "How many regular season games did the Knicks play at home in the 2021-22 season?",
+    "sql": "SELECT COUNT(*) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'New York Knicks' AND g.season = '2021-22' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 177,
+    "question": "What was the Lakers' average home points in the 2020-21 regular season?",
+    "sql": "SELECT AVG(g.home_score) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Los Angeles Lakers' AND g.season = '2020-21' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 178,
+    "question": "What was the Heat's average home points in the 2022-23 regular season?",
+    "sql": "SELECT AVG(g.home_score) FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE h.full_name = 'Miami Heat' AND g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 179,
+    "question": "List the top 3 teams by average home steals in the 2022-23 regular season.",
+    "sql": "SELECT t.full_name, AVG(l.stl) AS avg_stl FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' GROUP BY t.full_name ORDER BY avg_stl DESC LIMIT 3;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 180,
+    "question": "List the top 3 teams by average home blocks in the 2022-23 regular season.",
+    "sql": "SELECT t.full_name, AVG(l.blk) AS avg_blk FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' GROUP BY t.full_name ORDER BY avg_blk DESC LIMIT 3;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 183,
+    "question": "What is the latest game date in the 2022-23 regular season?",
+    "sql": "SELECT MAX(g.game_date) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 184,
+    "question": "What is the earliest game date in the 2022-23 regular season?",
+    "sql": "SELECT MIN(g.game_date) FROM game g WHERE g.season = '2022-23' AND g.season_type = 'Regular Season';",
+    "tables": [
+      "game"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 185,
+    "question": "What was the average number of turnovers by the home team in the 2022-23 regular season?",
+    "sql": "SELECT AVG(l.tov) FROM team_game_log l WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team_game_log"
+    ],
+    "difficulty": "medium"
+  },
+  {
+    "id": 186,
+    "question": "Which team allowed the most points per game at home in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(g.away_score) AS avg_allowed FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY avg_allowed DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 187,
+    "question": "Which team had the highest field goal percentage at home in the 2022-23 regular season?",
+    "sql": "SELECT t.full_name, AVG(l.fg_pct) AS avg_fg FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' AND l.fg_pct IS NOT NULL GROUP BY t.full_name ORDER BY avg_fg DESC LIMIT 1;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 188,
+    "question": "Which team had the lowest turnover average at home in the 2022-23 regular season?",
+    "sql": "SELECT t.full_name, AVG(l.tov) AS avg_tov FROM team_game_log l JOIN team t ON t.team_id = l.team_id WHERE l.is_home AND l.season = '2022-23' AND l.season_type = 'Regular Season' GROUP BY t.full_name ORDER BY avg_tov ASC LIMIT 1;",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 190,
+    "question": "How many games did the Lakers and Warriors play against each other in the 2022-23 regular season?",
+    "sql": "SELECT COUNT(*) FROM team_game_log l JOIN team t ON t.team_id = l.team_id JOIN team o ON o.team_id = l.opponent_team_id WHERE t.full_name = 'Los Angeles Lakers' AND o.full_name = 'Golden State Warriors' AND l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team",
+      "team_game_log"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 191,
+    "question": "Which 5 teams had the most home losses in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, COUNT(*) AS losses FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score < g.away_score GROUP BY h.full_name ORDER BY losses DESC LIMIT 5;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 192,
+    "question": "Which teams scored over 130 points at home more than 10 times in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, COUNT(*) AS games FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' AND g.home_score > 130 GROUP BY h.full_name HAVING COUNT(*) > 10 ORDER BY games DESC;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "hard"
+  },
+  {
+    "id": 196,
+    "question": "Which team had the largest decrease in average home scoring from 2021-22 to 2022-23?",
+    "sql": "WITH cur AS (SELECT h.full_name, AVG(g.home_score) AS avg_pts FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name), prev AS (SELECT h.full_name, AVG(g.home_score) AS avg_pts FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2021-22' AND g.season_type = 'Regular Season' GROUP BY h.full_name) SELECT cur.full_name, prev.avg_pts - cur.avg_pts AS decrease FROM cur JOIN prev USING (full_name) ORDER BY decrease DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 198,
+    "question": "What was the highest single-game point total scored by any team (home or away) in the 2022-23 regular season?",
+    "sql": "SELECT MAX(l.pts) FROM team_game_log l WHERE l.season = '2022-23' AND l.season_type = 'Regular Season';",
+    "tables": [
+      "team_game_log"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 199,
+    "question": "Which team won the most of its first 10 home games in the 2022-23 regular season?",
+    "sql": "SELECT full_name, SUM(won) AS wins FROM (SELECT h.full_name, CASE WHEN g.home_score > g.away_score THEN 1 ELSE 0 END AS won, ROW_NUMBER() OVER (PARTITION BY h.full_name ORDER BY g.game_date) AS rn FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season') firsts WHERE rn <= 10 GROUP BY full_name ORDER BY wins DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  },
+  {
+    "id": 200,
+    "question": "Which team had the best average home point differential in the 2022-23 regular season?",
+    "sql": "SELECT h.full_name, AVG(g.home_score - g.away_score) AS net FROM game g JOIN team h ON h.team_id = g.home_team_id WHERE g.season = '2022-23' AND g.season_type = 'Regular Season' GROUP BY h.full_name ORDER BY net DESC LIMIT 1;",
+    "tables": [
+      "game",
+      "team"
+    ],
+    "difficulty": "extra_hard"
+  }
+]

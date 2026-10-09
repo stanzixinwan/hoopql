@@ -1,0 +1,467 @@
+[
+  {
+    "id": 2,
+    "question": "List all team names from California.",
+    "reason": "needs team state, which the product does not store"
+  },
+  {
+    "id": 3,
+    "question": "What is LeBron James's height?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 5,
+    "question": "What year was the Boston Celtics founded?",
+    "reason": "needs franchise founding year, which the product does not store"
+  },
+  {
+    "id": 8,
+    "question": "How many players were drafted in 2003?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 10,
+    "question": "How many active players have their position listed as Center?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 12,
+    "question": "List all players drafted in the first round of 2018 along with their current team.",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 14,
+    "question": "Find active players who were the number one overall pick in the draft.",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 19,
+    "question": "Which top 5 draft picks between 2015 and 2020 are no longer active?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 21,
+    "question": "How many NBA teams are based in Texas?",
+    "reason": "needs team state, which the product does not store"
+  },
+  {
+    "id": 22,
+    "question": "List the full names of all teams based in Texas.",
+    "reason": "needs team state, which the product does not store"
+  },
+  {
+    "id": 24,
+    "question": "How many teams were founded in the year 1968?",
+    "reason": "needs franchise founding year, which the product does not store"
+  },
+  {
+    "id": 28,
+    "question": "How many players were selected in the 1996 NBA Draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 33,
+    "question": "What arena do the Los Angeles Lakers play in?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 34,
+    "question": "Who is the head coach of the Boston Celtics?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 40,
+    "question": "How many draft picks have the Lakers made in their history?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 41,
+    "question": "How many first-round picks were there in the 2019 NBA Draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 42,
+    "question": "How many NBA players are from France?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 43,
+    "question": "What was the average weight of players at the 2022 NBA Draft Combine?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 44,
+    "question": "How many different players were listed as inactive at some point during the 2022-23 season?",
+    "reason": "needs inactive lists, which the product does not load"
+  },
+  {
+    "id": 49,
+    "question": "How many NBA teams play in arenas that seat at least 20,000 fans?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 50,
+    "question": "How many NBA games were played in the 2022 season?",
+    "reason": "duplicate of a kept game-count question"
+  },
+  {
+    "id": 51,
+    "question": "How many games has the referee wearing jersey number 48 officiated?",
+    "reason": "needs referee assignments, which the product does not load"
+  },
+  {
+    "id": 52,
+    "question": "What jersey number does Kevin Durant wear?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 53,
+    "question": "How many of the top 10 picks in the 2003 NBA Draft are on record?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 56,
+    "question": "Which active NBA players play the Guard position?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 58,
+    "question": "Who were the top 3 picks in the 2018 NBA Draft and which teams selected them?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 59,
+    "question": "How many games did Nikola Jokic appear on the inactive list (match first_name and last_name)?",
+    "reason": "needs inactive lists, which the product does not load"
+  },
+  {
+    "id": 60,
+    "question": "How many 2022-23 regular season games have quarter-by-quarter scoring data available?",
+    "reason": "needs quarter-by-quarter scores, which the product does not load"
+  },
+  {
+    "id": 63,
+    "question": "Which college produced the most NBA Draft picks in 2015?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 68,
+    "question": "How many players at the 2021 NBA Draft Combine had a wingspan greater than 220 cm?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 70,
+    "question": "How many players drafted in 2014 have player profile information on record?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 73,
+    "question": "How many players did Philadelphia teams draft between 2010 and 2015?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 74,
+    "question": "What is the most common position among active NBA players?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 76,
+    "question": "Which number one overall draft picks are still active in the NBA?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 81,
+    "question": "How many games did Jayson Tatum miss?",
+    "reason": "needs inactive lists, which the product does not load"
+  },
+  {
+    "id": 83,
+    "question": "How many second-round picks after the 50th overall selection were there in the 2016 NBA Draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 84,
+    "question": "Which 10 players missed the most games during the 2022-23 season?",
+    "reason": "needs inactive lists, which the product does not load"
+  },
+  {
+    "id": 86,
+    "question": "Which referee has officiated the most NBA games?",
+    "reason": "needs referee assignments, which the product does not load"
+  },
+  {
+    "id": 87,
+    "question": "How many 2022-23 regular season games had an attendance above 19,000?",
+    "reason": "needs attendance, which the product does not load"
+  },
+  {
+    "id": 89,
+    "question": "How many scoring plays occurred in the highest-scoring 2022-23 regular season game?",
+    "reason": "needs play-by-play, which is deferred"
+  },
+  {
+    "id": 90,
+    "question": "How many franchise name changes have occurred in NBA history?",
+    "reason": "needs franchise history, which the product does not load"
+  },
+  {
+    "id": 91,
+    "question": "In which years did the NBA Draft Combine have fewer than 50 participants?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 96,
+    "question": "What was the highest vertical leap by a forward at the 2019 NBA Draft Combine?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 97,
+    "question": "What was the highest regulation-time home score across all quarters in any 2022-23 regular season game?",
+    "reason": "needs quarter-by-quarter scores, which the product does not load"
+  },
+  {
+    "id": 101,
+    "question": "How many NBA teams are there in Florida?",
+    "reason": "needs team state, which the product does not store"
+  },
+  {
+    "id": 106,
+    "question": "What state is the New York Knicks based in?",
+    "reason": "needs team state, which the product does not store"
+  },
+  {
+    "id": 108,
+    "question": "How many teams were founded before 1970?",
+    "reason": "needs franchise founding year, which the product does not store"
+  },
+  {
+    "id": 111,
+    "question": "What is Giannis Antetokounmpo's height?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 112,
+    "question": "What is Luka Doncic's weight?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 113,
+    "question": "How many players are from Spain?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 114,
+    "question": "How many players are from Canada?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 115,
+    "question": "What position does Nikola Jokic play?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 116,
+    "question": "What position does Stephen Curry play?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 117,
+    "question": "What school did Kevin Durant attend?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 118,
+    "question": "How many players were drafted in 2020?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 119,
+    "question": "How many players were drafted in 2010?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 120,
+    "question": "Who was the first overall pick in the 2019 draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 121,
+    "question": "Who was the first overall pick in the 2020 draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 122,
+    "question": "Who was the first overall pick in the 2018 draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 123,
+    "question": "What arena do the Boston Celtics play in?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 124,
+    "question": "What arena do the Golden State Warriors play in?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 125,
+    "question": "Who is the head coach of the Miami Heat?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 126,
+    "question": "Who is the head coach of the Denver Nuggets?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 127,
+    "question": "What is the arena capacity of the Lakers' home arena?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 128,
+    "question": "Who owns the Atlanta Hawks?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 132,
+    "question": "How many active players are listed as Forwards?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 133,
+    "question": "How many active players are listed as Guards?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 134,
+    "question": "What was Damian Lillard's draft year?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 135,
+    "question": "What was LeBron James's draft year?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 136,
+    "question": "How many players come from the country USA?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 140,
+    "question": "How many teams are based in New York state?",
+    "reason": "needs team state, which the product does not store"
+  },
+  {
+    "id": 141,
+    "question": "Who was the head coach of the Phoenix Suns?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 142,
+    "question": "Who was the first overall pick in the 2003 draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 143,
+    "question": "Who was the first overall pick in the 2014 draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 144,
+    "question": "What position does Joel Embiid play?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 145,
+    "question": "What position does Jayson Tatum play?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 148,
+    "question": "How many participants attended the 2023 NBA Draft Combine?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 149,
+    "question": "How many participants attended the 2020 NBA Draft Combine?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 150,
+    "question": "Who is the head coach of the Dallas Mavericks?",
+    "reason": "needs arena, coach, or owner details, which the product does not load"
+  },
+  {
+    "id": 163,
+    "question": "How many draft picks did the Boston Celtics make in their history?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 164,
+    "question": "How many draft picks did the Knicks make in their history?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 165,
+    "question": "How many second-round picks were there in the 2018 NBA Draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 166,
+    "question": "How many international players were drafted in the 2017 NBA Draft?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 167,
+    "question": "How many NBA players are over 7 feet tall?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 170,
+    "question": "What was the average weight at the 2019 NBA Draft Combine?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 171,
+    "question": "What was the average wingspan at the 2020 NBA Draft Combine?",
+    "reason": "needs draft combine measurements, which the product does not load"
+  },
+  {
+    "id": 181,
+    "question": "How many NBA players are from Australia?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 182,
+    "question": "How many NBA players are from Germany?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 189,
+    "question": "Find the active players who were drafted by the Lakers.",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 193,
+    "question": "Which 3 colleges produced the most NBA Draft picks across all years?",
+    "reason": "needs draft history, which the product does not load"
+  },
+  {
+    "id": 194,
+    "question": "How many active players were first-round draft picks?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 195,
+    "question": "Which 5 countries have produced the most NBA players?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  },
+  {
+    "id": 197,
+    "question": "Which active player has the most career draft positions ahead of them in the same draft year?",
+    "reason": "needs player bio data (height, weight, position, country, school, jersey, draft year), which the product does not load"
+  }
+]
