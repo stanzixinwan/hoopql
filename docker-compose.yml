@@ -12,6 +12,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    volumes:
+      - ./etl/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
 
   api:
     build: .
