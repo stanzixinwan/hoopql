@@ -23,6 +23,8 @@ models/
 
 # Jupyter
 .ipynb_checkpoints/
+# Notebooks rewrite outputs and execution counts whenever they are opened.
+research/notebooks/*.ipynb
 
 # Testing & type-checking caches
 .pytest_cache/
