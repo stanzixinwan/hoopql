@@ -91,6 +91,30 @@ def test_foreign_keys(schema_database: str) -> None:
     assert ("play_by_play", "game_id", "game") in pairs
 
 
+def test_game_and_player_log_columns_are_commented(schema_database: str) -> None:
+    rows = psql(
+        """
+        SELECT c.table_name || '.' || c.column_name
+        FROM information_schema.columns c
+        JOIN pg_catalog.pg_class cls
+          ON cls.relname = c.table_name
+         AND cls.relkind = 'r'
+        JOIN pg_catalog.pg_namespace ns
+          ON ns.oid = cls.relnamespace
+         AND ns.nspname = c.table_schema
+        LEFT JOIN pg_catalog.pg_description d
+          ON d.objoid = cls.oid
+         AND d.objsubid = c.ordinal_position
+        WHERE c.table_schema = 'public'
+          AND c.table_name IN ('player_game_log', 'game')
+          AND d.description IS NULL
+        ORDER BY 1
+        """,
+        schema_database,
+    )
+    assert rows.strip() == ""
+
+
 def test_lookup_indexes(schema_database: str) -> None:
     rows = psql(
         """
